@@ -23,7 +23,7 @@ class User extends Authenticatable
      * @return array<string, string>
      */
 
-    // 1人のユーザーが複数の家族グループに所属できる（家族内での権限[role]があるかどうかもここで確認）
+    // 1人のユーザーが複数の家族グループに所属できる（家族内での権限[role]もここで取得）
     public function families()
     {
         return $this->belongsToMany(Family::class)
