@@ -22,6 +22,29 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+    // 1人のユーザーが複数の家族グループに所属できる（家族内での権限[role]があるかどうかもここで確認）
+    public function families()
+    {
+        return $this->belongsToMany(Family::class)
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+    // このユーザーが作成した予定を取得
+    public function createdEvents()
+    {
+        return $this->hasMany(Event::class, 'created_by');
+    }
+
+    // このユーザーが対象になっている予定を取得
+    public function events()
+    {
+        return $this->belongsToMany(Event::class)
+            ->withTimestamps();
+    }
+
+
     protected function casts(): array
     {
         return [
