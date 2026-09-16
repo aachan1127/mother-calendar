@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('families', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('invite_code');
+            $table->foreignId('created_by');
             $table->timestamps();
         });
     }
