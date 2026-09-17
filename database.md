@@ -65,6 +65,7 @@ erDiagram
         string color
         timestamp created_at
         timestamp updated_at
+        timestamp deleted_at
     }
 
     EVENT_USER {
@@ -94,6 +95,7 @@ erDiagram
 削除まわり：
 - 退会処理として別扱い
 - 影響範囲を確認してから削除
+
 
 ---
 
@@ -195,6 +197,47 @@ event_user
 
 ---
 
+## 削除時の仕様
+
+### Userを完全削除した場合
+
+- `family_user`
+  - そのUserの所属情報を削除する
+- `event_user`
+  - そのUserと予定の紐付け情報を削除する
+- `families.created_by`
+  - `NULL` にする
+  - Family自体は削除しない
+- `events.created_by`
+  - `NULL` にする
+  - Event自体は削除しない
+  - 画面上では「製作者が見つかりません」などと表示する
+
+### Familyを完全削除した場合
+
+- `family_user`
+  - そのFamilyの所属情報を削除する
+- `events`
+  - そのFamilyに属するEventを完全削除する
+- Eventの完全削除に伴い、関連する `event_user` も削除する
+
+### Eventを削除した場合
+
+通常の削除ではSoft Delete（論理削除）を使用する。
+
+- `events.deleted_at` に削除日時を保存する
+- Eventのデータ自体はDBに残す
+- `event_user` の紐付けも残す
+- ゴミ箱から復元できる
+
+ゴミ箱から完全削除した場合はEventを物理削除する。
+
+- EventをDBから削除する
+- 関連する `event_user` も削除する
+
+---
+
+
 ## users テーブル
 
 | カラム | 型 | 内容 |
@@ -215,7 +258,7 @@ event_user
 | id | bigint | 家族ID |
 | name | string | 家族グループ名 |
 | invite_code | string | 招待コード |
-| created_by | bigint | 家族グループ作成者 |
+| created_by | bigint | 家族グループ作成者（NULL可） |
 | created_at | timestamp | 作成日時 |
 | updated_at | timestamp | 更新日時 |
 
@@ -240,14 +283,15 @@ event_user
 | --- | --- | --- |
 | id | bigint | 予定ID |
 | family_id | bigint | 家族ID |
-| created_by | bigint | 予定作成者 |
+| created_by | bigint | 予定作成者（NULL可） |
 | title | string | 予定タイトル |
 | start_at | datetime | 開始日時 |
 | end_at | datetime | 終了日時 |
-| memo | text | メモ |
-| color | string | 予定の色 |
+| memo | text | メモ（NULL可） |
+| color | string | 予定の色（NULL可） |
 | created_at | timestamp | 作成日時 |
 | updated_at | timestamp | 更新日時 |
+| deleted_at | timestamp | 論理削除日時（NULL可） |
 
 ---
 

@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('family_id')->constrained();
-            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('family_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('created_by')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
             $table->string('title');
             $table->datetime('start_at');
             $table->datetime('end_at');
