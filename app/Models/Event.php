@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+
+#[Fillable(['family_id', 'created_by', 'title', 'start_at', 'end_at', 'memo', 'color'])]
 
 class Event extends Model
 {

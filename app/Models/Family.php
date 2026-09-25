@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+// 下記カラムはfillable（代入可能）にする
 #[Fillable(['name', 'invite_code', 'created_by'])]
 
 class Family extends Model
