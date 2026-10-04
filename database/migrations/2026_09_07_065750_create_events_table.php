@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('family_id')->constrained()->cascadeOnDelete();
             $table->foreignId('created_by')
                 ->constrained('users')
-                ->nullOnDelete();
+            // created_by はNULLでもOK,Userが削除されたらNULLにする
+                ->nullable();
             $table->string('title');
             $table->datetime('start_at');
             $table->datetime('end_at');
