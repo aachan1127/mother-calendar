@@ -49,6 +49,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            // 平文パスワードを設定すると、Laravelが自動的にハッシュ化
             'password' => 'hashed',
         ];
     }
