@@ -18,8 +18,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 // 予定一覧を取得する
-Route::get('/families/{family}/events', [EventController::class, 'index']);
+Route::get('/families/{family}/events', [EventController::class, 'index'])->middleware('auth:sanctum');
 
 
 // 予定を追加する
-Route::post('/families/{family}/events', [EventController::class, 'store']);
+Route::post('/families/{family}/events', [EventController::class, 'store'])->middleware('auth:sanctum');
