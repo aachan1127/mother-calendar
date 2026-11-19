@@ -4,12 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 // 下記カラムはfillable（代入可能）にする
 #[Fillable(['name', 'invite_code', 'created_by'])]
 
 class Family extends Model
 {
+    // Factoryを利用するために、HasFactory トレイトを使用できるようにする
+    use HasFactory;
+
     // この家族のメンバーを取得する（家族内での権限[role]もここで取得）
     public function members()
     {
