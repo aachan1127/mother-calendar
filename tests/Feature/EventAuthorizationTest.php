@@ -12,7 +12,7 @@ class EventAuthorizationTest extends TestCase
 {
     use RefreshDatabase;
 
-    // 未ログインユーザーが家族の予定を閲覧できないことを確認するテスト
+    // 未ログインユーザーが家族の予定を閲覧できないことを確認するテスト👉閲覧を拒否（401）
     public function test_guest_cannot_view_family_events(): void
     {
         // Laravelのテスト機能を使ってGETリクエストを送る
@@ -21,7 +21,7 @@ class EventAuthorizationTest extends TestCase
         $response->assertUnauthorized();
     }
 
-    // 家族に所属するユーザーが予定一覧を取得できることを確認
+    // 家族に所属するユーザーが予定一覧を取得できることを確認👉閲覧を許可（200）
     public function test_family_member_can_view_events(): void
     {
         // テスト用ユーザーを作成
@@ -43,7 +43,7 @@ class EventAuthorizationTest extends TestCase
         $response->assertOk();
     }
 
-    // 家族に所属していないユーザーは予定一覧を取得できないことを確認
+    // 家族に所属していないユーザーは予定一覧を取得できないことを確認👉閲覧を拒否（403）
     public function test_non_member_cannot_view_family_events(): void
     {
         // テスト用ユーザーを作成
